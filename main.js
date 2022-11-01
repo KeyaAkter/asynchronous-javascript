@@ -135,6 +135,10 @@ function renderData(country) {
   wrapper.insertAdjacentHTML("afterbegin", html);
 }
 
+///////////////////////////////////////////
+// THIRD CLASS
+///////////////////////////////////////////
+
 // MODERN WAY OF AJAX CALL(JSON FORMAT)
 
 const wrapperjson = document.querySelector(".wrapper");
@@ -163,6 +167,8 @@ function renderPost(posts) {
 function renderErrorMsg(error) {
   wrapperjson.insertAdjacentText("afterbegin", error);
 }
+
+// Another Example
 
 const container = document.querySelector(".container");
 
@@ -235,3 +241,86 @@ class App {
 }
 
 const myApp = new App();
+
+///////////////////////////////////////////
+// FOUR CLASS(MODERN API)
+///////////////////////////////////////////
+
+fetch("https://jsonplaceholder.typicode.com/posts")
+  .then((response) => {
+    console.log(response);
+
+    if (!response.ok) throw new Error("Something Went Wrong");
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
+// POST DATA TO THE SERVER
+
+const button = document.querySelector(".button");
+
+button.addEventListener("click", function (e) {
+  const userId = document.querySelector(".user-id").value;
+  const title = document.querySelector(".title").value;
+  const body = document.querySelector(".body").value;
+
+  e.preventDefault();
+
+  const data = {
+    userId: userId,
+    title: title,
+    body: body,
+  };
+
+  fetch("https://jsonplaceholder.typicode.com/posts", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => console.log(data));
+});
+
+// DIFFRENT WAY OF GETTING DATA(Efficient, optimized) using async function
+
+// fetch => response.json() => data => catch
+
+async function fetchData() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    console.log(response);
+
+    console.log(30 + 90);
+
+    if (!response.ok) throw new Error("Something went wrong!");
+
+    const data = response.json();
+    console.log(data);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+fetchData();
+
+async function fetchPost() {
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+    if (!res.ok) throw new Error("Error Occurs!");
+
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    err.insertAdjacentText("afterbegin", err);
+  }
+}
+
+fetchPost();
